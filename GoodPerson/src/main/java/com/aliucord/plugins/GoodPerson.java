@@ -37,11 +37,12 @@ import kotlin.jvm.functions.Function1;
 
 @SuppressWarnings("unused")
 @AliucordPlugin
-public class GoodPerson extends Plugin {
+public class BetterPerson extends Plugin {
 
     List<String> badVerbs  = Arrays.asList("fuck"," cum","kill","destroy");
     List<String> badNouns = Arrays.asList("cunt","shit","bullshit","ass","bitch","nigga","hell","whore","dick","piss","pussy","slut",
-            "tit"," fag","cum","cock","retard","blowjob","bastard","men","man","kotlin","die","sex","nigger","gay","brainrot","brainless");
+            "tit"," fag","cum","cock","retard","blowjob","bastard","penis","vagina","cunny","die","sex","nigger","gay","brainrot","brainless");
+    List<String> badHolee = Arrays.asList("ho lee sheet","ho lee fuk");
 
     List<String> badVerbReplacements  = Arrays.asList("love","eat","deconstruct","marry","fart","teach","display","plug",
             "explode","undress","finish","freeze","beat","free","brush","allocate","date","melt","breed","educate",
@@ -51,6 +52,8 @@ public class GoodPerson extends Plugin {
             "hamburger","monster truck","osu!","Ukrainian ball in search of gas game","Anime","Anime girl",
             "good","keyboard","NVIDIA RTX 3090 Graphics Card","storm","queen","single","umbrella","mosque","physics",
             "bath","virus","bathroom","mom","owner","airport");
+
+    List<String> badHoleeReplacements = Arrays.asList("whoa very nice","ho lee gud","very nice bro","very unbelievable");
 
     public boolean isBadNoun(String noun) {
         noun = noun.toLowerCase();
@@ -70,6 +73,15 @@ public class GoodPerson extends Plugin {
         return false;
     }
 
+    public boolean isBadHolee(String holee) {
+        verb = verb.toLowerCase();
+        //returns boolean and word
+        for (var badVerb: badHolee) {
+            if (holee.length() > 1 &&holee.contains(badHolee)) return true;
+        }
+        return false;
+    }
+
     public String getRandomVerb(){
         return badVerbReplacements.get(new Random().nextInt(badVerbReplacements.size() - 1));
     }
@@ -78,19 +90,25 @@ public class GoodPerson extends Plugin {
         return badNounReplacements.get(new Random().nextInt(badNounReplacements.size() - 1));
     }
 
+    public String getRandomHolee(){
+        return badHoleeReplacements.get(new Random().nextInt(badHoleeReplacements.size() - 1));
+    }
+
     public String filterWord(String word) {
         if (word.contains("http")) return null;
-        if (isBadVerb(word) && isBadNoun(word)) {
+        if (isBadVerb(word) && isBadNoun(word) && isBadHolee(word)) {
             if (new Random().nextBoolean()) {
                 return getRandomNoun();
             } else {
                 return  getRandomVerb();
-            }
+            } else {
+                return  getRandomHolee();
         } else if (isBadVerb(word)) {
             return getRandomVerb();
         } else if (isBadNoun(word)) {
             return getRandomNoun();
-        }
+        } else if (isBadHolee(word)) {
+            return getRandomHolee();
 
         return null;
     }
